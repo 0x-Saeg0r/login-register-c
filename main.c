@@ -1,6 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include"linker.h"
+
+// Changer système de changement de mdp une fois log car il reset le fichier
 
 int validate_login(char username[30], char password[20])
 {
@@ -70,40 +73,35 @@ int validate_login(char username[30], char password[20])
 int login_account()
 {
     system("clear");
-    char line[50];
-    char total[50];
-    FILE * flogin = fopen("datas.txt", "r");
-    char username[30], password[20];
+    char line[70], inputuser[30], inputpassword[20], total[50];
+
+
     printf("Enter your username -> ");
-    scanf("%s", username);
+    scanf("%s", &inputuser);
     printf("Enter your password -> ");
-    scanf("%s", password);
-    fgets(line, 70, flogin);
-    strcpy(total, username);
+    scanf("%s", &inputpassword);
+    strcpy(total, inputuser);
     strcat(total, " ");
-    strcat(total, password);
+    strcat(total, inputpassword);
+    strcat(total, "\n");
 
-
-    fclose(flogin);
-
-    if (strcmp(line, total) == 0)
+    FILE * fptr = fopen("datas.txt", "r");
+    while(fgets(line, 70, fptr)!=NULL)
     {
-        printf("Login successful\n");
-        validate_login(username, password);
-        return 0;
-    }
-    else
-    {
-        printf("Error, try again\n");
-        sleep(2);
-        login_account();
+
+        if (strcmp(line, total) == 0)
+        {
+            system("clear");
+            validate_login(inputuser, inputpassword);
+        }
 
     }
+    return 0;
 
 
     return 0;
 }
-int new_account()
+int reset_file()
 {
     char username[30], password[20];
     FILE * flogin = fopen("datas.txt", "w");
@@ -115,13 +113,62 @@ int new_account()
     fprintf(flogin, "%s %s", username, password);
 
     fclose(flogin);
+    system("clear");
+    main();
     return 0;
 }
 
-int main(void)
+int new_account()
+{
+    char username[30], password[20];
+    FILE * flogin = fopen("datas.txt", "a");
+
+    printf("Choose a new username -> ");
+    scanf("%s", &username);
+    printf("Choose a new password -> ");
+    scanf("%s", &password);
+    fprintf(flogin, "%s %s", username, password);
+
+    fclose(flogin);
+    system("clear");
+    main();
+    return 0;
+}
+
+int testfunc(void)
+{
+
+    char line[70], inputuser[30], inputpassword[20], total[50];
+
+
+    printf("Enter your username -> ");
+    scanf("%s", &inputuser);
+    printf("Enter your password -> ");
+    scanf("%s", &inputpassword);
+    strcpy(total, inputuser);
+    strcat(total, " ");
+    strcat(total, inputpassword);
+    strcat(total, "\n");
+
+    FILE * fptr = fopen("datas.txt", "r");
+    while(fgets(line, 70, fptr)!=NULL)
+    {
+
+        if (strcmp(line, total) == 0)
+        {
+            printf("Login success");
+            break;
+        }
+
+    }
+    return 0;
+
+}
+
+int start(void)
 {
     int answer;
-    printf("Choose between :\n1 : Login\n2 : Register\n\n");
+    printf("Choose between :\n1 : Login\n2 : Register\n3 : Reset file with new user\n4 : Test\n\n");
     scanf("%d", &answer);
     switch(answer)
     {
@@ -130,6 +177,12 @@ int main(void)
         break;
     case 2:
         new_account();
+        break;
+    case 3:
+        reset_file();
+        break;
+    case 4:
+        testfunc();
         break;
     }
 
