@@ -3,8 +3,6 @@
 #include<string.h>
 #include"linker.h"
 
-// Changer système de changement de mdp une fois log car il reset le fichier
-
 int validate_login(char username[30], char password[20])
 {
     int answer;
@@ -12,57 +10,12 @@ int validate_login(char username[30], char password[20])
     system("clear");
     printf("You are now logged in %s.\n\n", username);
     printf("Do you want to change login or password ?\n\n");
-    printf("1 : Username --- 2 : Password --- 0 : Nothing\n\n");
+    printf("0 : Nothing\n\n");
     scanf("%d", &answer);
     switch(answer)
     {
     case 0:
         printf("Okay let's keep it !");
-        break;
-    case 1:
-        printf("Please enter password to change username -> ");
-        scanf("%s", &passwordinput);
-        if(strcmp(password, passwordinput) == 0)
-        {
-            printf("Enter new username -> ");
-            scanf("%s", new_user);
-            FILE * flogin = fopen("datas.txt", "w");
-            strcpy(new_total, new_user);
-            strcat(new_total, " ");
-            strcat(new_total, password);
-            fprintf(flogin, new_total);
-            fclose(flogin);
-            printf("Your new username is %s", new_user);
-            validate_login(new_user, password);
-            sleep(3);
-        }
-        else
-        {
-            printf("Error in the password");
-            validate_login(username, password);
-        }
-        break;
-    case 2:
-        printf("Please enter password to change password -> ");
-        scanf("%s", &passwordinput);
-        if(strcmp(password, passwordinput) == 0)
-        {
-            printf("Enter new password -> ");
-            scanf("%s", new_pass);
-            FILE * flogin = fopen("datas.txt", "w");
-            strcpy(new_total, username);
-            strcat(new_total, " ");
-            strcat(new_total, new_pass);
-            fprintf(flogin, new_total);
-            fclose(flogin);
-            printf("Your new password is %s", new_pass);
-            validate_login(username, new_pass);
-        }
-        else
-        {
-            printf("Error in the password");
-            validate_login(username, password);
-        }
         break;
     }
 
@@ -88,7 +41,7 @@ int login_account()
     FILE * fptr = fopen("datas.txt", "r");
     while(fgets(line, 70, fptr)!=NULL)
     {
-
+        printf("%s %s", line, total);
         if (strcmp(line, total) == 0)
         {
             system("clear");
@@ -96,8 +49,6 @@ int login_account()
         }
 
     }
-    return 0;
-
 
     return 0;
 }
@@ -110,7 +61,7 @@ int reset_file()
     scanf("%s", &username);
     printf("Choose a new password -> ");
     scanf("%s", &password);
-    fprintf(flogin, "%s %s", username, password);
+    fprintf(flogin, "%s %s\n", username, password);
 
     fclose(flogin);
     system("clear");
@@ -127,7 +78,7 @@ int new_account()
     scanf("%s", &username);
     printf("Choose a new password -> ");
     scanf("%s", &password);
-    fprintf(flogin, "%s %s", username, password);
+    fprintf(flogin, "%s %s\n", username, password);
 
     fclose(flogin);
     system("clear");
@@ -148,7 +99,7 @@ int testfunc(void)
     strcpy(total, inputuser);
     strcat(total, " ");
     strcat(total, inputpassword);
-    strcat(total, "\n");
+    strcat(total, "\n")
 
     FILE * fptr = fopen("datas.txt", "r");
     while(fgets(line, 70, fptr)!=NULL)
